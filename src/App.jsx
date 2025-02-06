@@ -22,12 +22,20 @@ const Background = styled.div`
 `;
 
 const Firstcont = styled.div`
-  display: flex;
+  display: ${(props) =>
+    props.isMore ? "flex" : "none"}; 
   flex-direction: column;
   gap: 15px;
   position: relative;
   padding: 20px;
   margin-left: 165px;
+
+  @media (max-width: 725px) {
+    margin-left: 64px;
+  }
+  @media (max-width: 580px) {
+    margin-left: 26px;
+  }
 `;
 
 const Paragraph = styled.p`
@@ -37,6 +45,9 @@ const Paragraph = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: 28px;
+  @media (max-width: 580px) {
+    font-size: 12px;
+  }
 `;
 
 const Imagebox = styled.div`
@@ -54,6 +65,13 @@ const Secondcont = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 165px;
+
+  @media (max-width: 725px) {
+    margin-left: 64px;
+  }
+  @media (max-width: 580px) {
+    margin-left: 26px;
+  }
 `;
 
 const Timer = styled.div`
@@ -69,6 +87,9 @@ const Time = styled.h1`
   font-weight: 700;
   line-height: 200px;
   letter-spacing: -5px;
+  @media (max-width: 580px) {
+    font-size: 100px;
+  }
 `;
 
 const Timezone = styled.p`
@@ -79,11 +100,20 @@ const Timezone = styled.p`
   font-weight: 300;
   line-height: 28px;
   text-transform: uppercase;
+  @media (max-width: 580px) {
+    font-size: 15px;
+  }
 `;
 
 const Buttoncont = styled.div`
   display: flex;
-  gap: 740px;
+  justify-content: space-between;
+  align-items: baseline;
+
+  @media (max-width: 725px) {
+    flex-direction: column;
+    gap: 30px;
+  }
 `;
 
 const Country = styled.div`
@@ -107,6 +137,7 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin-right: 165px;
 `;
 
 const Buttonp = styled.p`
@@ -146,7 +177,12 @@ const Hiddencont = styled.div`
   overflow: hidden;
   transition: height 1s ease-in-out, opacity 3s ease-in-out;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  @media (max-width: 400px) {
+    flex-direction: column;
+    justify-content: center;
+    gap: 35px;
+  }
 `;
 
 const Paragrapscont = styled.div`
@@ -155,10 +191,51 @@ const Paragrapscont = styled.div`
   justify-content: space-around;
   height: 100%;
 `;
+
 const Hiddendiv = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 20px;
+`;
+
+const Hiddenp = styled.div`
+  color: #303030;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  @media (max-width: 560px) {
+    font-size: 10px;
+  }
+`;
+
+const Hiddenheading = styled.h1`
+  color: #303030;
+  font-family: Inter;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  @media (max-width: 560px) {
+    font-size: 20px;
+  }
+`;
+const Hidebox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (max-width: 400px) {
+    padding-right: 22px;
+    padding-left: 22px;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row;
+  }
 `;
 
 function App() {
@@ -181,6 +258,9 @@ function App() {
   let imageSrc = sun;
   let backgroundImage = backgroundImageday;
 
+  const isEvening = currentHour >= 18 || currentHour < 6;
+  const hiddenTextColor = isEvening ? "#fff" : "#303030"; 
+
   if (currentHour >= 6 && currentHour < 12) {
     greetingText = "GOOD MORNING, IT’S CURRENTLY";
     imageSrc = sun;
@@ -198,6 +278,7 @@ function App() {
   const hours = time.getHours();
   const minutes = time.getMinutes();
   const formattedTime = `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
+
   const handleButtonClick = () => {
     setIsRotated(!isRotated);
     setIsMore(!isMore);
@@ -208,7 +289,7 @@ function App() {
     <>
       <Background bgImage={backgroundImage}>
         <Paragrapscont>
-          <Firstcont>
+          <Firstcont isMore={isMore}>
             <Imagebox>
               <Paragraph>
                 “The science of operations, as derived from mathematics more{" "}
@@ -219,7 +300,6 @@ function App() {
               </Paragraph>
               <Img src={reset} alt="Reset" />
             </Imagebox>
-
             <Paragraph>Ada Lovelace</Paragraph>
           </Firstcont>
 
@@ -245,12 +325,40 @@ function App() {
         </Paragrapscont>
         <Hiddencont isVisible={isHiddenVisible}>
           <Hiddendiv>
-            <p>giorgi</p>
-            <p>giorgi</p>
+            <Hidebox>
+              <Hiddenp style={{ color: hiddenTextColor }}>
+                CURRENT TIMEZONE
+              </Hiddenp>
+              <Hiddenheading style={{ color: hiddenTextColor }}>
+                Europe/London
+              </Hiddenheading>
+            </Hidebox>
+            <Hidebox>
+              {" "}
+              <Hiddenp style={{ color: hiddenTextColor }}>
+                Day of the year
+              </Hiddenp>
+              <Hiddenheading style={{ color: hiddenTextColor }}>
+                295
+              </Hiddenheading>
+            </Hidebox>
           </Hiddendiv>
+
           <Hiddendiv>
-            <p>giorgi</p>
-            <p>giorgi</p>
+            <Hidebox>
+              <Hiddenp style={{ color: hiddenTextColor }}>
+                Day of the week
+              </Hiddenp>
+              <Hiddenheading style={{ color: hiddenTextColor }}>
+                5
+              </Hiddenheading>
+            </Hidebox>
+            <Hidebox>
+              <Hiddenp style={{ color: hiddenTextColor }}>Week number</Hiddenp>
+              <Hiddenheading style={{ color: hiddenTextColor }}>
+                42
+              </Hiddenheading>
+            </Hidebox>
           </Hiddendiv>
         </Hiddencont>
       </Background>
