@@ -22,8 +22,7 @@ const Background = styled.div`
 `;
 
 const Firstcont = styled.div`
-  display: ${(props) =>
-    props.isMore ? "flex" : "none"}; 
+  display: ${(props) => (props.isMore ? "flex" : "none")};
   flex-direction: column;
   gap: 15px;
   position: relative;
@@ -259,7 +258,7 @@ function App() {
   let backgroundImage = backgroundImageday;
 
   const isEvening = currentHour >= 18 || currentHour < 6;
-  const hiddenTextColor = isEvening ? "#fff" : "#303030"; 
+  const hiddenTextColor = isEvening ? "#fff" : "#303030";
 
   if (currentHour >= 6 && currentHour < 12) {
     greetingText = "GOOD MORNING, IT’S CURRENTLY";
@@ -284,6 +283,19 @@ function App() {
     setIsMore(!isMore);
     setIsHiddenVisible(!isHiddenVisible);
   };
+
+  const start = new Date(time.getFullYear(), 0, 0);
+  const diff = time - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diff / oneDay);
+
+  const dayOfWeek = time.getDay();
+
+  const firstDayOfYear = new Date(time.getFullYear(), 0, 1);
+  const daysBetween = Math.floor(
+    (time - firstDayOfYear) / (1000 * 60 * 60 * 24)
+  );
+  const weekNumber = Math.ceil((daysBetween + 1) / 7);
 
   return (
     <>
@@ -334,12 +346,11 @@ function App() {
               </Hiddenheading>
             </Hidebox>
             <Hidebox>
-              {" "}
               <Hiddenp style={{ color: hiddenTextColor }}>
                 Day of the year
               </Hiddenp>
               <Hiddenheading style={{ color: hiddenTextColor }}>
-                295
+                {dayOfYear}
               </Hiddenheading>
             </Hidebox>
           </Hiddendiv>
@@ -350,13 +361,23 @@ function App() {
                 Day of the week
               </Hiddenp>
               <Hiddenheading style={{ color: hiddenTextColor }}>
-                5
+                {
+                  [
+                    "Sunday",
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                  ][dayOfWeek]
+                }
               </Hiddenheading>
             </Hidebox>
             <Hidebox>
               <Hiddenp style={{ color: hiddenTextColor }}>Week number</Hiddenp>
               <Hiddenheading style={{ color: hiddenTextColor }}>
-                42
+                {weekNumber}
               </Hiddenheading>
             </Hidebox>
           </Hiddendiv>
